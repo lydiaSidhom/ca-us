@@ -8,6 +8,9 @@ till now it contains:-
 3- get type of instruction R for R-type.
 						   I for I-type.
 						   J for J-type.
+4- startThis will result in the end with list of binary instruction (Not completed yet).
+5- readInstructions read from file get list of word instructions.
+6- checkOrgisfirst checks if first instruction is org.
 */
 
 import java.util.ArrayList;
@@ -76,6 +79,54 @@ public class Initializer {
 		Registers.put("$t9", "11001");
 		Registers.put("$ra", "11111");
 	}
+
+
+	public void start(File f) throws Exception {
+		readInstructions(f);
+		checkOrgisfirst();
+		for(int i=1; i<wordInstructions.size();i++) {
+			String currentInstruction = wordInstructions.get(i);
+			if(currentInstruction.contains(":")) {
+				String label=currentInstruction.split(":")[0];
+				int no= startingAddress+(i -1);
+				labelValues.put(label, no);
+				currentInstruction=currentInstruction.substring(label.length()+1);
+			}
+			String opcode=currentInstruction.split(" ")[0].replace(" ", "");
+			currentInstruction=currentInstruction.substring(opcode.length()+1);
+			String[] registersUsed=currentInstruction.split(",");
+			String type=typeOfInstruction(opcode);
+			if(type.equalsIgnoreCase("R")) {
+				
+			} else if(type.equalsIgnoreCase("I")) {
+				
+			} else {
+				
+			}
+		}
+		
+	}
+	public void readInstructions(File f) throws Exception {
+		BufferedReader br= new BufferedReader(new FileReader(f));
+		String instr="";
+		while((instr=br.readLine()) != null) {
+			wordInstructions.add(instr);
+		}
+	}
+	public void checkOrgisfirst() throws Exception {
+		String first=wordInstructions.get(0);
+		String[] xx=first.split(" ");
+		if(xx.length != 2 || !xx[0].equalsIgnoreCase("org") ) {
+			throw new Exception("Should contain org in first line");
+		} 
+		try {
+			this.startingAddress= Integer.parseInt(xx[1]);
+		} catch(NumberFormatException e) {
+			System.out.println("Must go to an address");
+		}
+	}
+	
+	
 	public String typeOfInstruction(String opcode) throws Exception {
 		if(Rinstructions.containsKey(opcode)) {
 			return "R";
