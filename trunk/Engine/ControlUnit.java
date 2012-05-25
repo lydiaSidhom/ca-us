@@ -3,7 +3,8 @@ package Engine;
 public class ControlUnit {
 	int RegDst0;
 	int RegDst1;
-	int Branch;
+	int BranchEQ;
+	int BranchNE;
 	int MemRead;
 	int MemtoReg0;
 	int MemtoReg1;
@@ -25,7 +26,8 @@ public class ControlUnit {
 			//jr instruction
 			RegDst0 = -1;
 			RegDst1 = -1;
-			Branch = 0;
+			BranchEQ = 0;
+			BranchNE = 0;
 			MemRead = 0;
 			MemtoReg0 = -1;
 			MemtoReg1 = -1;
@@ -41,7 +43,8 @@ public class ControlUnit {
 			//other R-format instruction
 			RegDst0 = 1;
 			RegDst1 = 0;
-			Branch = 0;
+			BranchEQ = 0;
+			BranchNE = 0;
 			MemRead = 0;
 			MemtoReg0 = 0;
 			MemtoReg1 = 0;
@@ -58,7 +61,8 @@ public class ControlUnit {
 			//jump instruction
 			RegDst0 = -1;
 			RegDst1 = -1;
-			Branch = 0;
+			BranchEQ = 0;
+			BranchNE = 0;
 			MemRead = 0;
 			MemtoReg0 = -1;
 			MemtoReg1 = -1;
@@ -75,7 +79,8 @@ public class ControlUnit {
 			//jump and link instruction
 			RegDst0 = 0;
 			RegDst1 = 1;
-			Branch = 0;
+			BranchEQ = 0;
+			BranchNE = 0;
 			MemRead = 0;
 			MemtoReg0 = 0;
 			MemtoReg1 = 1;
@@ -92,7 +97,8 @@ public class ControlUnit {
 			//beq
 			RegDst0 = -1;
 			RegDst1 = -1;
-			Branch = 1;
+			BranchEQ = 1;
+			BranchNE = 0;
 			MemRead = 0;
 			MemtoReg0 = -1;
 			MemtoReg1 = -1;
@@ -109,7 +115,8 @@ public class ControlUnit {
 			//bne
 			RegDst0 = -1;
 			RegDst1 = -1;
-			Branch = 1;
+			BranchEQ = 0;
+			BranchNE = 1;
 			MemRead = 0;
 			MemtoReg0 = -1;
 			MemtoReg1 = -1;
@@ -126,7 +133,8 @@ public class ControlUnit {
 			//addi
 			RegDst0 = 0;
 			RegDst1 = 0;
-			Branch = 0;
+			BranchEQ = 0;
+			BranchNE = 0;
 			MemRead = 0;
 			MemtoReg0 = 0;
 			MemtoReg1 = 0;
@@ -143,7 +151,8 @@ public class ControlUnit {
 			//slti
 			RegDst0 = 0;
 			RegDst1 = 0;
-			Branch = 0;
+			BranchEQ = 0;
+			BranchNE = 0;
 			MemRead = 0;
 			MemtoReg0 = 0;
 			MemtoReg1 = 0;
@@ -160,7 +169,8 @@ public class ControlUnit {
 			//sltui
 			RegDst0 = 0;
 			RegDst1 = 0;
-			Branch = 0;
+			BranchEQ = 0;
+			BranchNE = 0;
 			MemRead = 0;
 			MemtoReg0 = 0;
 			MemtoReg1 = 0;
@@ -177,7 +187,8 @@ public class ControlUnit {
 			//andi
 			RegDst0 = 0;
 			RegDst1 = 0;
-			Branch = 0;
+			BranchEQ = 0;
+			BranchNE = 0;
 			MemRead = 0;
 			MemtoReg0 = 0;
 			MemtoReg1 = 0;
@@ -194,7 +205,8 @@ public class ControlUnit {
 			//ori
 			RegDst0 = 0;
 			RegDst1 = 0;
-			Branch = 0;
+			BranchEQ = 0;
+			BranchNE = 0;
 			MemRead = 0;
 			MemtoReg0 = 0;
 			MemtoReg1 = 0;
@@ -211,7 +223,8 @@ public class ControlUnit {
 			//lw
 			RegDst0 = 0;
 			RegDst1 = 0;
-			Branch = 0;
+			BranchEQ = 0;
+			BranchNE = 0;
 			MemRead = 1;
 			MemtoReg0 = 1;
 			MemtoReg1 = 0;
@@ -228,7 +241,8 @@ public class ControlUnit {
 			//sw
 			RegDst0 = -1;
 			RegDst1 = -1;
-			Branch = 0;
+			BranchEQ = 0;
+			BranchNE = 0;
 			MemRead = 0;
 			MemtoReg0 = -1;
 			MemtoReg1 = -1;
@@ -251,8 +265,12 @@ public class ControlUnit {
 		return RegDst1;
 	}
 
-	public int getBranch() {
-		return Branch;
+	public int getBranchEQ() {
+		return BranchEQ;
+	}
+	
+	public int getBranchNE() {
+		return BranchNE;
 	}
 
 	public int getMemRead() {
