@@ -34,7 +34,7 @@ public class Initializer {
 		Iinstructions = new HashMap<String,String>();
 		Jinstructions = new HashMap<String,String>();
 		Registers = new HashMap<String,String>();
-		labelValues = new HashMap<String,Integer>();
+		labelValues = new HashMap<String, Integer>();
 		fillall();
 	}
 	public void fillall() {
@@ -53,7 +53,7 @@ public class Initializer {
 		Iinstructions.put("beq", "000100");
 		Iinstructions.put("bne", "000101");
 		Iinstructions.put("lw", "100011");
-		Iinstructions.put("sw", "001011");
+		Iinstructions.put("sw", "101011");
 		Iinstructions.put("andi", "001100");
 		Iinstructions.put("ori", "001101");
 		Iinstructions.put("slti", "001010");
@@ -99,8 +99,15 @@ public class Initializer {
 				currentInstruction=currentInstruction.substring(label.length()+1);
 			}
 			String opcode=currentInstruction.split(" ")[0].replace(" ", "");
+			if(opcode.equalsIgnoreCase("")) {
+				opcode=currentInstruction.split(" ")[1].replace(" ", "");
+			}
 			currentInstruction=currentInstruction.substring(opcode.length()+1);
+			currentInstruction=currentInstruction.replace(" ", "");
 			String[] registersUsed=currentInstruction.split(",");
+			for(int k=0;k<registersUsed.length;k++) {
+				registersUsed[k]=registersUsed[k].replace(" ", "");
+			}
 			String type=typeOfInstruction(opcode);
 			if(type.equalsIgnoreCase("R")) {
 			  formRInstructions(opcode,registersUsed, i);	
@@ -159,6 +166,9 @@ public class Initializer {
 				result+=Registers.get(registersUsed[0]);
 				int constant=Integer.parseInt(offset);
 				String xx=Integer.toBinaryString(constant);
+				if(xx.length()>16) {
+				   xx=xx.substring(xx.length()-16, xx.length());
+				}
 				for(int j=xx.length();j < 16. ;j++) {
 					result+="0";
 				}
@@ -169,6 +179,9 @@ public class Initializer {
 				result+=Registers.get(registersUsed[0]);
 				result+=Registers.get(registersUsed[1]);
 				String xx=Integer.toBinaryString(labelValues.get(registersUsed[2]));
+				if(xx.length()>16) {
+					   xx=xx.substring(xx.length()-16, xx.length());
+					}
 				for(int j=xx.length();j < 16. ;j++) {
 					result+="0";
 				}
@@ -178,6 +191,9 @@ public class Initializer {
 				result+=Registers.get(registersUsed[0]);
 				int offset=Integer.parseInt(registersUsed[2]);
 				String xx=Integer.toBinaryString(offset);
+				if(xx.length()>16) {
+					   xx=xx.substring(xx.length()-16, xx.length());
+					}
 				for(int j=xx.length();j < 16. ;j++) {
 					result+="0";
 				}
@@ -194,6 +210,9 @@ public class Initializer {
 			result=Jinstructions.get(opcode);
 			int val=labelValues.get(registersUsed[0]);
 			String xx=Integer.toBinaryString(val);
+			if(xx.length()>26) {
+				   xx=xx.substring(xx.length()-16, xx.length());
+				}
 			for(int j=xx.length();j < 26. ;j++) {
 				result+="0";
 			}
@@ -202,6 +221,9 @@ public class Initializer {
 			result=Jinstructions.get(opcode);
 			int val=Integer.parseInt(registersUsed[0]);
 			String xx=Integer.toBinaryString(val);
+			if(xx.length()>26) {
+				   xx=xx.substring(xx.length()-16, xx.length());
+				}
 			for(int j=xx.length();j < 26. ;j++) {
 				result+="0";
 			}
@@ -250,5 +272,4 @@ public class Initializer {
 		}
 		return true;
 	}
-	
 }
