@@ -1,6 +1,8 @@
 package Engine;
 
 /*
+Author: Christine.
+
 This class is the one where we will put mapping of most instructions to binary
 till now it contains:-
 1- Instructions.
@@ -32,6 +34,7 @@ public class Initializer {
 		Iinstructions = new HashMap<String,String>();
 		Jinstructions = new HashMap<String,String>();
 		Registers = new HashMap<String,String>();
+		labelValues = new HashMap<String,Integer>();
 		fillall();
 	}
 	public void fillall() {
