@@ -18,4 +18,10 @@ public class Register {
 	public String getValue(){
 		return  this.value;
 	}
+	public void increment(){
+		value = Long.toBinaryString((Long.parseLong(value, 2) + 1));
+	}
+	public void clear(){
+		value =  "00000000000000000000000000000000";
+	}
 }
