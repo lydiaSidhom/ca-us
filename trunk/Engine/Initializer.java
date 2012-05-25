@@ -13,10 +13,15 @@ till now it contains:-
 6- checkOrgisfirst checks if first instruction is org.
 */
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 public class Initializer {
 	HashMap<String,String> Rinstructions, Iinstructions, Jinstructions, Registers;
+	HashMap<String, Integer> labelValues;
 	ArrayList<String> wordInstructions;
 	ArrayList<String> binaryInstructions;
 	int startingAddress;
@@ -79,8 +84,6 @@ public class Initializer {
 		Registers.put("$t9", "11001");
 		Registers.put("$ra", "11111");
 	}
-
-
 	public void start(File f) throws Exception {
 		readInstructions(f);
 		checkOrgisfirst();
@@ -97,14 +100,111 @@ public class Initializer {
 			String[] registersUsed=currentInstruction.split(",");
 			String type=typeOfInstruction(opcode);
 			if(type.equalsIgnoreCase("R")) {
-				
+			  formRInstructions(opcode,registersUsed, i);	
 			} else if(type.equalsIgnoreCase("I")) {
-				
+			  formIInstructions(opcode,registersUsed, i);
 			} else {
-				
+				formJInstructions(opcode,registersUsed, i);
 			}
 		}
 		
+	}
+	public void formRInstructions(String opcode, String[] registersUsed, int i) throws Exception {
+		String result="000000";
+		if(opcode.equalsIgnoreCase("sll")||opcode.equalsIgnoreCase("srl")) {
+			String[]registers={registersUsed[0],registersUsed[1]};
+			if(!(registersUsed.length==3 && checkIfValidRegisters(registers))) {
+				throw new Exception("Error Wrong format of instructiona at line "+ (i+1));
+			} else {
+				result+=Registers.get(registersUsed[1]);
+				result+="00000";
+				result+=Registers.get(registersUsed[0]);
+				result+=Registers.get(registersUsed[2]);
+				result+=Rinstructions.get(opcode);
+			}
+		} else if(opcode.equalsIgnoreCase("jr")) {
+			if(registersUsed.length!=1 || !registersUsed[0].equalsIgnoreCase("$ra")) {
+				throw new Exception("Error Wrong format of instruction at line "+ (i+1));
+			} else {
+				result+=Registers.get(registersUsed[0]);
+				result+="000000000000000";
+				result+=Rinstructions.get(opcode);
+			}
+		} else {
+			if(!(registersUsed.length==3 && checkIfValidRegisters(registersUsed))) {
+				throw new Exception("Error Wrong format of instruction at line "+ (i+1));
+			} else {
+				result+=Registers.get(registersUsed[1]);
+				result+=Registers.get(registersUsed[2]);
+				result+=Registers.get(registersUsed[0]);
+				result+="00000";
+				result+=Rinstructions.get(opcode);
+			}
+		}
+		binaryInstructions.add(result);
+		
+	}
+	public void formIInstructions(String opcode, String[] registersUsed, int i) throws Exception {
+		String result=Iinstructions.get(opcode);
+		if(opcode.equalsIgnoreCase("lw") || opcode.equalsIgnoreCase("sw")) {
+			String offset=registersUsed[1].split("\\(")[0];
+			String register2=registersUsed[1].split("\\(")[1].substring(0, registersUsed[1].split("\\(")[1].length()-1);
+			if(registersUsed.length!=2 || !checkIfValidRegisters(new String[]{registersUsed[0],register2})) {
+				throw new Exception("Error wrong format of instruction at line "+ (i+1));
+			} else {
+				result+=Registers.get(register2);
+				result+=Registers.get(registersUsed[0]);
+				int constant=Integer.parseInt(offset);
+				String xx=Integer.toBinaryString(constant);
+				for(int j=xx.length();j < 16. ;j++) {
+					result+="0";
+				}
+				result+=xx;
+			}
+		} else {
+			if((opcode.equalsIgnoreCase("beq") || opcode.equalsIgnoreCase("bne")) && labelValues.get(registersUsed[2])!=null) {
+				result+=Registers.get(registersUsed[0]);
+				result+=Registers.get(registersUsed[1]);
+				String xx=Integer.toBinaryString(labelValues.get(registersUsed[2]));
+				for(int j=xx.length();j < 16. ;j++) {
+					result+="0";
+				}
+				result+=xx;
+			} else {
+				result+=Registers.get(registersUsed[1]);
+				result+=Registers.get(registersUsed[0]);
+				int offset=Integer.parseInt(registersUsed[2]);
+				String xx=Integer.toBinaryString(offset);
+				for(int j=xx.length();j < 16. ;j++) {
+					result+="0";
+				}
+				result+=xx;
+			}
+		}
+		binaryInstructions.add(result);
+	}
+	public void formJInstructions(String opcode, String[] registersUsed, int i) throws Exception {
+		String result="";
+		if(registersUsed.length!=1) {
+			throw new Exception("Error wrong format of instruction at line "+ (i+1));		
+		} else if(labelValues.get(registersUsed[0])!=null) {
+			result=Jinstructions.get(opcode);
+			int val=labelValues.get(registersUsed[0]);
+			String xx=Integer.toBinaryString(val);
+			for(int j=xx.length();j < 26. ;j++) {
+				result+="0";
+			}
+			result+=xx;
+		} else {
+			result=Jinstructions.get(opcode);
+			int val=Integer.parseInt(registersUsed[0]);
+			String xx=Integer.toBinaryString(val);
+			for(int j=xx.length();j < 26. ;j++) {
+				result+="0";
+			}
+			result+=xx;
+		}
+		binaryInstructions.add(result);
 	}
 	public void readInstructions(File f) throws Exception {
 		BufferedReader br= new BufferedReader(new FileReader(f));
@@ -139,4 +239,13 @@ public class Initializer {
 		} 
 		throw new Exception("Invalid instruction Opcode");
 	}
+	public boolean checkIfValidRegisters(String[] registersUsed) {
+		for(int i=0;i<registersUsed.length;i++) {
+			if(!Registers.containsKey(registersUsed[i])) {
+				return false;
+			} 
+		}
+		return true;
+	}
+	
 }
