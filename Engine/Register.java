@@ -24,4 +24,7 @@ public class Register {
 	public void clear(){
 		value =  "00000000000000000000000000000000";
 	}
+	public String incrementBy4() {
+		return Long.toBinaryString((Long.parseLong(value, 2) + 4));
+	}
 }

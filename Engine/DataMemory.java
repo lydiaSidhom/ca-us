@@ -7,13 +7,17 @@ public class DataMemory {
 	
 	
 	Map<String, String> myMemory = new HashMap<String, String>();
-	String inputAddress;
-	String inputData;
-	String outData;
-	boolean writeSignal;
-	boolean readSignal;
-	
-	public DataMemory(){
+
+	public String readMemory(String address) {
+		try {
+			String value = myMemory.get(address);
+			if(value== null) {
+				value="";
+				for(int i=0;i<32;i++) {
+					value+="0";
+				}
+			}
+			return value;
 		
 	}
 	

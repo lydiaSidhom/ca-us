@@ -20,11 +20,16 @@ public class InstructionsMemory {
 		this.beginAddress=origin;
 		this.binaryInstructions=instructions;
 	}
+	public void printall() {
+		for(int i=0;i<binaryInstructions.size();i++) {
+			System.out.println(binaryInstructions.get(i));
+		}
+	}
 
-	public String getInstructionAt(int address) {
+	public String getInstructionAt(long address) {
 		try {
-
-			return this.binaryInstructions.get(address-beginAddress);
+			System.out.println("we are here");
+			return this.binaryInstructions.get(((int)(address-beginAddress))/4);
 		
 		} catch(Exception e) {
 			System.out.println("Trying to Accessing wrong address No instruction to fetch.");

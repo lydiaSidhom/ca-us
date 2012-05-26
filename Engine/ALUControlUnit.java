@@ -98,10 +98,13 @@ public class ALUControlUnit {
 	}
 	
 	public void setFunct(String input) throws Exception{
+		if(ALUOpcode.equals("000")) {
 		if(input.length()==6)
 			funct = input;
-			else
-			throw new Exception("Wrong Input to funct !");
+			else {
+				throw new Exception("Wrong Input to funct !");
+	
+			}
 			if(input.equals(ADDCODE)){
 				functId = 0;
 				return;
@@ -138,7 +141,7 @@ public class ALUControlUnit {
 				functId = 8;
 				return;
 			}
-			throw new Exception("Wrong Input to funct !");
+		}
 	}
 	
 	public String getResultALUFuncion(){

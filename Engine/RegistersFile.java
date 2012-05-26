@@ -10,9 +10,10 @@ public class RegistersFile {
 	String inputData;
 	String outputRegister1;
 	String outputRegister2;
-	boolean WriteSignal;
+	int WriteSignal;
 	
 	public RegistersFile(){
+		Registers= new HashMap<String, Register>();
 		Registers.put("00000",new Register("$zero"));
 		Registers.put("00001",new Register("$at"));
 		Registers.put("00010",new Register("$r0"));
@@ -43,36 +44,36 @@ public class RegistersFile {
 	}
 	public void setAddress1(String input) throws Exception{
 		if(input.length() != 5)
-			throw new Exception("Wrong Input");
+			throw new Exception("Wrong Input address1");
 			this.readAddress1 = input;
 		}
 	public void setAddress2(String input) throws Exception{
 		if(input.length() != 5)
-			throw new Exception("Wrong Input");
+			throw new Exception("Wrong Input address2");
 			this.readAddress2 = input;
 		}
 	public void read() throws Exception{
 		if (readAddress1.length() != 5 || readAddress2.length() !=5){
-			throw new Exception("Wrong Address");
+			throw new Exception("Wrong Address read");
 		}
 		this.outputRegister1 = Registers.get(readAddress1).getValue();
 		this.outputRegister2 = Registers.get(readAddress2).getValue();
 	}
 	public void setData(String input)throws Exception{
 		if(input.length() != 32)
-			throw new Exception("Wrong Input");
+			throw new Exception("Wrong Input setData");
 			this.inputData = input;
 		}
 	public void setWriteAddress(String input)throws Exception{
 		if(input.length() != 5)
-			throw new Exception("Wrong Input");
+			throw new Exception("Wrong Input setWriteAddress");
 			this.writeAddress = input;
 		}
-	public void setWritingSignal(boolean input){
+	public void setWritingSignal(int input){
 		WriteSignal = input;
 	}
 	public void write() throws Exception{
-		if(this.WriteSignal){
+		if(this.WriteSignal==1){
 			Register temp = Registers.get(writeAddress);
 			temp.setValue(inputData);
 			this.Registers.put(writeAddress, temp);
