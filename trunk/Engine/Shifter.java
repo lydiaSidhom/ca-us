@@ -13,15 +13,18 @@ public class Shifter {
 	}
 	public void setInput(String input) throws Exception {
 		if (input.length() == 32) {
-			input = input;
+			this.input = input;
+		} else {
+			throw new Exception("Wrong Input shifter setInput");
 		}
-		throw new Exception("Wrong Input");
 	}
 	public void setShiftingValue(String input) throws Exception {
 		if (input.length() == 32) {
 			shiftingValue = input;
+		} else {
+			throw new Exception("Wrong Input shifter setShiftingValues");
+
 		}
-		throw new Exception("Wrong Input");
 	}
 	public String getOutput(){
 		return output;
