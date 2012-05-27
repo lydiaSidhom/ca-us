@@ -21,6 +21,9 @@ public class ALUAdder {
 	}
 
 	public String getOutput() {
+		if(output.length()>32) {
+			output=output.substring(output.length()-32);
+		}
 		return this.output;
 	}
 

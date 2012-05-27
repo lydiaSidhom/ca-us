@@ -65,9 +65,14 @@ public class RegistersFile {
 			this.inputData = input;
 		}
 	public void setWriteAddress(String input)throws Exception{
-		if(input.length() != 5)
+		if(input.length() != 5) {
 			throw new Exception("Wrong Input setWriteAddress");
+		}
+		if(input.equals("00000")) {
+			throw new Exception("Can not modify register zero");
+		} else {
 			this.writeAddress = input;
+		}
 		}
 	public void setWritingSignal(int input){
 		WriteSignal = input;
@@ -78,5 +83,35 @@ public class RegistersFile {
 			temp.setValue(inputData);
 			this.Registers.put(writeAddress, temp);
 		}
+	}
+	public void printall() {
+		System.out.println("$zero " +Registers.get("00000").getValue());
+		System.out.println("$at "+Registers.get("00001").getValue());
+		System.out.println("$r0 "+Registers.get("00010").getValue());
+		System.out.println("$r1 "+Registers.get("00011").getValue());
+		System.out.println("$a0 "+Registers.get("00100").getValue());
+		System.out.println("$a1 "+Registers.get("00101").getValue());
+		System.out.println("$a2 "+Registers.get("00110").getValue());
+		System.out.println("$a3 "+Registers.get("00111").getValue());
+		System.out.println("$t0 "+Registers.get("01000").getValue());
+		System.out.println("$t1 "+Registers.get("01001").getValue());
+		System.out.println("$t2 "+Registers.get("01010").getValue());
+		System.out.println("$t3 "+Registers.get("01011").getValue());
+		System.out.println("$t4 "+Registers.get("01100").getValue());
+		System.out.println("$t5 "+Registers.get("01101").getValue());
+		System.out.println("$t6 "+Registers.get("01110").getValue());
+		System.out.println("$t7 "+Registers.get("01111").getValue());
+		System.out.println("$s0 "+Registers.get("10000").getValue());
+		System.out.println("$s1 "+Registers.get("10001").getValue());
+		System.out.println("$s2 "+Registers.get("10010").getValue());
+		System.out.println("$s3 "+Registers.get("10011").getValue());
+		System.out.println("$s4 "+Registers.get("10100").getValue());
+		System.out.println("$s5 "+Registers.get("10101").getValue());
+		System.out.println("$s6 "+Registers.get("10110").getValue());
+		System.out.println("$s7 "+Registers.get("10111").getValue());
+		System.out.println("$t8 "+Registers.get("11000").getValue());
+		System.out.println("$t9 "+Registers.get("11001").getValue());
+		System.out.println("$ra "+Registers.get("11111").getValue());
+
 	}
 }
