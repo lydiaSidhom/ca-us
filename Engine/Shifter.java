@@ -27,15 +27,24 @@ public class Shifter {
 		}
 	}
 	public String getOutput(){
+		for(int x=output.length();x<32;x++) {
+			output="0"+output;
+		}
 		return output;
 	}
 	public void shift(int direction){
 		if(direction ==0){
 			output = Long.toBinaryString(((Long.parseLong(input,
 					2) << Long.parseLong(shiftingValue, 2))));
+			if(output.length()>32) {
+				output=output.substring(output.length()-32);
+			}
 		}else{
 			output = Long.toBinaryString(((Long.parseLong(input,
 					2) >> Long.parseLong(shiftingValue, 2))));
+			if(output.length()>32) {
+				output=output.substring(output.length()-32);
+			}
 		}
 	}
 	

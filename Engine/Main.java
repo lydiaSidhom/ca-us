@@ -91,6 +91,7 @@ public class Main {
 			
 				ALUCU.setFunct(funcode);
 				ALUCU.generateALUFunction();
+				System.out.println(ALUCU.getResultALUFuncion());
 				signextender.setInput(rd+""+shamount+funcode);
 				signextender.ExtendSign();
 				registers.setAddress1(rs);
@@ -106,7 +107,9 @@ public class Main {
 					dataread=DM.readMemory(alu.getALUResult());
 					System.out.println("data read "+dataread );
 				}
-				MemtoRegister.setMUXValues(CU.MemtoReg1, CU.MemtoReg0, alu.getALUResult(), dataread, PC.incrementBy4(), "");
+				System.out.println("IS PC incremented"+ PC.incrementBy4());
+				String PCincremented=PC.incrementBy4();
+				MemtoRegister.setMUXValues(CU.MemtoReg1, CU.MemtoReg0, alu.getALUResult(), dataread, PCincremented, "");
 				if(CU.getMemWrite()==1) {
 					DM.writeMemory(alu.getALUResult(), registers.outputRegister2);
 				}
@@ -131,9 +134,15 @@ public class Main {
 				registers.setWritingSignal(CU.RegWrite);
 				registers.setWriteAddress(RegDestination.output);
 				registers.setData(MemtoRegister.output);
+				registers.write();
 				System.out.println("We reached here");
+				System.out.println("Jump address "+JumpMux.output);
 				PC.setValue(JumpMux.output);
 				System.out.println("PC value"+PC.getValue());
+				System.out.println("Register Prints");
+				registers.printall();
+				System.out.println("Memory Prints");
+				DM.printContents();
 				
 			}
 			

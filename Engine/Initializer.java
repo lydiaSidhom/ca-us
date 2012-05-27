@@ -94,7 +94,7 @@ public class Initializer {
 			String currentInstruction = wordInstructions.get(i);
 			if(currentInstruction.contains(":")) {
 				String label=currentInstruction.split(":")[0];
-				int no= startingAddress+(i -1);
+				int no=(i -1);
 				labelValues.put(label, no);
 				currentInstruction=currentInstruction.substring(label.length()+1);
 			}
@@ -178,7 +178,9 @@ public class Initializer {
 			if((opcode.equalsIgnoreCase("beq") || opcode.equalsIgnoreCase("bne")) && labelValues.get(registersUsed[2])!=null) {
 				result+=Registers.get(registersUsed[0]);
 				result+=Registers.get(registersUsed[1]);
-				String xx=Integer.toBinaryString(labelValues.get(registersUsed[2]));
+				int kk=labelValues.get(registersUsed[2]);
+				kk=kk-i;
+				String xx=Integer.toBinaryString(kk);
 				if(xx.length()>16) {
 					   xx=xx.substring(xx.length()-16, xx.length());
 					}
